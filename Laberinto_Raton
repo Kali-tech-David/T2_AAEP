@@ -94,7 +94,7 @@ res = [[0 for _ in range(9)] for _ in range(9)]
 print("Laberinto:")
 imprime(lab)
 if(laberB(lab, res, 8, 0, 0)):
-    print("¡El ratón puso salir!")
+    print("¡El ratón logró salir!")
 else:
     print("¡El ratón quedó atrapado!")
 imprime(res)
