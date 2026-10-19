@@ -1,0 +1,100 @@
+PUNTOS_MIN = 23
+paso = 0
+camino = []          
+retrocedio = False   
+
+def imprime(mat):
+    for x in mat:
+        print(x)
+    print()
+
+def valido(lab, res, f, c):
+    
+    if(f < 0 or f >= len(lab)):
+        return False
+    if(c < 0 or c >= len(lab[0])):
+        return False
+   
+    if(lab[f][c] == 0):
+        return False
+
+    if(res[f][c] == 1):
+        return False
+    return True
+
+def muestraRetroceso(res):
+    global retrocedio
+    retrocedio = False
+    if(len(camino) > 0):
+        print("Callejon sin salida: retrocedemos hasta (", camino[-1][0], ",", camino[-1][1], ")")
+    else:
+        print("Callejon sin salida: retrocedemos hasta el inicio")
+    imprime(res)
+
+def laberB(lab, res, f, c, puntos):
+    global paso, retrocedio
+    if(f == 0 and c == 0):
+        if(valido(lab, res, f, c)):
+            puntos += lab[f][c]
+            if(puntos >= PUNTOS_MIN):
+                if(retrocedio):
+                    muestraRetroceso(res)
+                res[f][c] = 1
+                paso += 1
+                print("Paso", paso, ": llegamos a F con", puntos, "puntos")
+                imprime(res)
+                return True
+            else:
+               
+                print("Llegamos a F con solo", puntos, "puntos (< 23). Hay que buscar otro camino.")
+                print()
+                retrocedio = True
+                return False
+        else:
+            return False
+    else:
+
+        if(valido(lab, res, f, c)):
+            if(retrocedio):
+                muestraRetroceso(res)
+            res[f][c] = 1
+            camino.append((f, c))
+            puntos += lab[f][c]
+            paso += 1
+            print("Paso", paso, ": avanzamos a (", f, ",", c, ") puntos =", puntos)
+            imprime(res)
+            if(laberB(lab, res, f-1, c, puntos)):
+                return True
+            elif(laberB(lab, res, f, c+1, puntos)):
+                return True
+            elif(laberB(lab, res, f+1, c, puntos)):
+                return True
+            elif(laberB(lab, res, f, c-1, puntos)):
+                return True
+            else:
+                res[f][c] = 0   
+                camino.pop()
+                retrocedio = True   
+                return False
+        else:
+            return False
+
+
+lab = [[1, 1, 1, 3, 0, 1, 1, 1, 4],
+       [3, 0, 0, 1, 0, 1, 0, 0, 1],
+       [1, 1, 0, 1, 1, 1, 1, 0, 1],
+       [0, 1, 0, 1, 0, 0, 1, 0, 1],
+       [1, 1, 1, 1, 1, 1, 3, 1, 1],
+       [3, 0, 1, 0, 0, 0, 1, 0, 1],
+       [1, 1, 1, 1, 3, 1, 1, 1, 1],
+       [1, 0, 0, 1, 0, 1, 0, 0, 4],
+       [1, 1, 3, 1, 0, 1, 1, 1, 1]]
+res = [[0 for _ in range(9)] for _ in range(9)]
+
+print("Laberinto:")
+imprime(lab)
+if(laberB(lab, res, 8, 0, 0)):
+    print("¡El ratón puso salir!")
+else:
+    print("¡El ratón quedó atrapado!")
+imprime(res)
