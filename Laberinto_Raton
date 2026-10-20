@@ -9,7 +9,6 @@ def imprime(mat):
     print()
 
 def puntosCelda(lab, f, c):
-    # Solo las celdas con 3 o 4 suman puntos; las de valor 1 solo dejan pasar
     if(lab[f][c] >= 3):
         return lab[f][c]
     return 0
