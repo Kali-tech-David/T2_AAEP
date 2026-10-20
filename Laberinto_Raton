@@ -8,6 +8,12 @@ def imprime(mat):
         print(x)
     print()
 
+def puntosCelda(lab, f, c):
+    # Solo las celdas con 3 o 4 suman puntos; las de valor 1 solo dejan pasar
+    if(lab[f][c] >= 3):
+        return lab[f][c]
+    return 0
+
 def valido(lab, res, f, c):
     
     if(f < 0 or f >= len(lab)):
@@ -35,7 +41,7 @@ def laberB(lab, res, f, c, puntos):
     global paso, retrocedio
     if(f == 0 and c == 0):
         if(valido(lab, res, f, c)):
-            puntos += lab[f][c]
+            puntos += puntosCelda(lab, f, c)
             if(puntos >= PUNTOS_MIN):
                 if(retrocedio):
                     muestraRetroceso(res)
@@ -59,7 +65,7 @@ def laberB(lab, res, f, c, puntos):
                 muestraRetroceso(res)
             res[f][c] = 1
             camino.append((f, c))
-            puntos += lab[f][c]
+            puntos += puntosCelda(lab, f, c)
             paso += 1
             print("Paso", paso, ": avanzamos a (", f, ",", c, ") puntos =", puntos)
             imprime(res)
